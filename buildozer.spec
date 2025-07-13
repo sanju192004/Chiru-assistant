@@ -7,6 +7,7 @@ version = 1.0
 requirements = python3,kivy,pyttsx3,speechrecognition
 orientation = portrait
 fullscreen = 1
+android.permissions = RECORD_AUDIO,INTERNET
 
 [buildozer]
 log_level = 2
