@@ -6,18 +6,27 @@ on:
 
 jobs:
   build-android:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04  # use older Ubuntu with libtinfo5
     steps:
       - uses: actions/checkout@v4
 
-      - name: Build APK with Buildozer
-        uses: digreatbrian/buildozer-action@v2
+      - name: Set up Python
+        uses: actions/setup-python@v4
         with:
           python-version: 3.9
-          buildozer-cmd: buildozer -v android debug
+
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y zip unzip build-essential libncurses5 libstdc++6 zlib1g zlib1g-dev libffi-dev libssl-dev git ccache
+          pip install buildozer cython
+
+      - name: Build APK
+        run: |
+          buildozer android debug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: ChiruAPK
-          path: ./bin/*.apk
+          path: bin/*.apk
